@@ -1,0 +1,14 @@
+vk:
+  api:
+    version: ${VK_API_VERSION}
+    url: ${VK_API_URL}
+  bot:
+    token: ${VK_BOT_TOKEN}
+    confirmation_code: ${VK_CONFIRMATION_CODE}
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: vk-quote-bot
