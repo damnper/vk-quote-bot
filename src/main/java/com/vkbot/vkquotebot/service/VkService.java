@@ -1,8 +1,8 @@
 package com.vkbot.vkquotebot.service;
 
-import com.vkbot.vkquotebot.config.VkConfig;
 import com.vkbot.vkquotebot.model.VkCallbackRequest;
 import com.vkbot.vkquotebot.utils.HttpClient;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class VkService {
 
     private final HttpClient httpClient;
-    private final VkConfig vkConfig;
+    private final Dotenv dotenv;
     private final Random random = new Random();
 
     /**
@@ -44,7 +44,7 @@ public class VkService {
             int randomId = random.nextInt(Integer.MAX_VALUE);
             String url = String.format(
                     "%s/messages.send?user_id=%d&message=%s&random_id=%d&access_token=%s&v=%s",
-                    vkConfig.getApi().getUrl(), userId, text, randomId, vkConfig.getBot().getToken(), vkConfig.getApi().getVersion());
+                    dotenv.get("VK_API_URL"), userId, text, randomId, dotenv.get("VK_BOT_TOKEN"), dotenv.get("VK_API_VERSION"));
             String body = String.format("message=%s", URLEncoder.encode(text, UTF_8));
 
             log.info("Sending message to VK user {}: {}", userId, text);

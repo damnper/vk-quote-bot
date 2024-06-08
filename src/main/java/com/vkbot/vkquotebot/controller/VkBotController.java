@@ -2,9 +2,9 @@ package com.vkbot.vkquotebot.controller;
 
 import com.vkbot.vkquotebot.model.VkCallbackRequest;
 import com.vkbot.vkquotebot.service.VkService;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VkBotController {
 
     private final VkService vkService;
-
-    @Value("${vk.bot.confirmation_code}")
-    private String confirmationCode;
+    private final Dotenv dotenv;
 
     /**
      * Handles VK callback requests.
@@ -33,6 +31,7 @@ public class VkBotController {
     @PostMapping("/callback")
     public String handleVkCallback(@RequestBody VkCallbackRequest request) {
         log.info("Received callback request: {}", request);
+        String confirmationCode = dotenv.get("VK_CONFIRMATION_CODE");
         if ("confirmation".equals(request.getType())) {
             return confirmationCode;
         } else if ("message_new".equals(request.getType())) {
